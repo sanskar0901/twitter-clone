@@ -21,7 +21,8 @@ db.once('open', () => {
 
 // Routes
 const userRoutes = require('./routes/user/user');
-
+const tweetRoutes = require('./routes/tweet/tweet');
+app.use('/api/tweets', tweetRoutes);
 app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {

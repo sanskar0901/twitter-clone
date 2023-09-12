@@ -6,6 +6,7 @@ const profileSchema = {
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
     retweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
+    tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
     bio: String,
     location: String,
     website: String,
