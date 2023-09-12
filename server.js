@@ -20,12 +20,8 @@ db.once('open', () => {
 });
 
 // Routes
-const authRoutes = require('./routes/auth');
-const tweetRoutes = require('./routes/tweets');
-const userRoutes = require('./routes/users');
+const userRoutes = require('./routes/user/user');
 
-app.use('/api/auth', authRoutes);
-app.use('/api/tweets', tweetRoutes);
 app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {
