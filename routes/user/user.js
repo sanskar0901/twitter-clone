@@ -8,6 +8,7 @@ router.post('/login', UserController.loginUser);
 router.get('/profile/:username', UserController.getUserProfile);
 router.put('/profile/:username', authMiddleware, UserController.updateUserProfile);
 router.get('/users', UserController.getAllUsers);
+router.get('/getuser', authMiddleware, UserController.getUser);
 router.post('/follow/:userId', authMiddleware, UserController.followUser);
 router.post('/unfollow/:userId', authMiddleware, UserController.unfollowUser);
 

@@ -86,6 +86,19 @@ module.exports = {
         }
     },
 
+    //Get user
+    getUser: async (req, res) => {
+        try {
+            const user = req.user;
+            const userdata = await User.findById(user);
+            res.status(200).json({ username: userdata.username, name: userdata.name, avatar: userdata.avatar });
+
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    },
 
     // Get user profile
     getUserProfile: async (req, res) => {
