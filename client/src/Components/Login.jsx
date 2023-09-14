@@ -23,10 +23,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         axios.post(`${api}/users/login`, formData).then((res) => {
-
             console.log(res);
             cookie.set('token', res.data.token)
-            navigate('/');
+            window.location.reload();
+
         }).catch((error) => {
             console.log(error);
         })

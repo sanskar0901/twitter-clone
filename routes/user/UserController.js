@@ -245,4 +245,22 @@ module.exports = {
             return res.status(500).json({ message: 'Internal server error' });
         }
     },
+    // get following
+    getFollowing: async (req, res) => {
+        try {
+            const userId = req.user;
+            console.log(userId);
+            const user = await User.findById(userId)
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            res.status(200).json(user.profile.following);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+
+    }
 };

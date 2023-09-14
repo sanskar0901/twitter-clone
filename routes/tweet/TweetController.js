@@ -143,4 +143,14 @@ module.exports = {
             res.status(500).json({ message: 'Internal server error' });
         }
     },
+    // Get all tweets
+    getAllTweet: async (req, res) => {
+        try {
+            const tweets = await Tweet.find().sort({ updatedAt: -1 }).populate('author', ['username', 'name', 'avatar']);
+            res.json(tweets);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 };

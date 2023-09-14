@@ -1,6 +1,9 @@
-import React from 'react'
 import { Link } from 'react-router-dom';
 import logo from '../../Assets/logo.svg';
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { api } from '../const'
+import axios from 'axios'
 import { BiHomeCircle, BiSearch } from "react-icons/bi";
 import { CiCircleMore } from "react-icons/ci";
 import { BsPerson } from "react-icons/bs";
@@ -10,8 +13,24 @@ import { TbNotes } from "react-icons/tb";
 import { HiOutlineMail, HiOutlineBell } from "react-icons/hi";
 import { RiTwitterXFill } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa"
-import Cookies from 'js-cookie';
-const Sidebar = ({ username, name }) => {
+const Sidebar = () => {
+
+    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    useEffect(() => {
+        axios.get(`${api}/users/getuser`, {
+            headers: {
+                "x-auth-token": `${Cookies.get("token")}`,
+            },
+        }
+        ).then((res) => {
+            setUsername(res.data.username);
+            setName(res.data.name);
+            console.log(res.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [])
     return (
         <>
             <img src={logo} alt="Logo" className='mb-3 ' />

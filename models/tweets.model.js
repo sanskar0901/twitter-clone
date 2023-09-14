@@ -5,6 +5,7 @@ const tweetSchema = new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     repliesCount: { type: Number, default: 0 },
     edited: { type: Boolean, default: false },
+    imgurl: { type: String },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     retweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     createdAt: Date,

@@ -11,5 +11,5 @@ router.get('/users', UserController.getAllUsers);
 router.get('/getuser', authMiddleware, UserController.getUser);
 router.post('/follow/:userId', authMiddleware, UserController.followUser);
 router.post('/unfollow/:userId', authMiddleware, UserController.unfollowUser);
-
+router.get('/following', authMiddleware, UserController.getFollowing);
 module.exports = router;

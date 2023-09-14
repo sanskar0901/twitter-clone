@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { api } from '../const';
 import Cookies from 'js-cookie';
@@ -7,89 +7,150 @@ import Cookies from 'js-cookie';
 // import logo from '../../Assets/logo.svg';
 // import { BiHomeCircle, BiSearch } from "react-icons/bi";
 // import { CiCircleMore } from "react-icons/ci";
-// import { BsPerson } from "react-icons/bs";
+import { BsPerson, BsImageFill } from "react-icons/bs";
 // import { IoPeopleOutline } from "react-icons/io5";
 // import { IoMdLogOut } from "react-icons/io";
 // import { TbNotes } from "react-icons/tb";
 // import { HiOutlineMail, HiOutlineBell } from "react-icons/hi";
 // import { RiTwitterXFill } from "react-icons/ri";
-// import { FaUserCircle } from "react-icons/fa"
+import { FaUserCircle } from "react-icons/fa"
 import Sidebar from './Sidebar';
+import Tweets from './Tweets';
+import Follow from './Follow';
 
 
 function Home() {
-    const [selectedTab, setSelectedTab] = useState('timeline');
-    const token = Cookies.get('token');
-    const [username, setUsername] = useState('');
-    const [name, setName] = useState('');
-    useEffect(() => {
-        axios.get(`${api}/users/getuser`, {
+    const [text, setText] = useState('');
+    const [textareaStyle, setTextareaStyle] = useState({});
+    const textareaRef = useRef(1);
+    const [timeline, setTimeline] = useState([])
+    const [tweets, setTweets] = useState([])
+    const [selectedTab, setSelectedTab] = useState('forYou');
+    const token = Cookies.get("token");
+
+    const fetchTweets = () => {
+        axios
+            .get(`${api}/tweets/all`, {
+                headers: {
+                    "x-auth-token": token,
+                },
+            })
+            .then((res) => {
+                setTweets(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const fetchTimeline = () => {
+        axios
+            .get(`${api}/tweets/timeline`, {
+                headers: {
+                    "x-auth-token": token,
+                },
+            })
+            .then((res) => {
+                setTimeline(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const handleTweet = () => {
+        axios.post(`${api}/tweets/create`, {
+            text
+        }, {
             headers: {
                 "x-auth-token": `${token}`,
             },
-        }
-        ).then((res) => {
-            setUsername(res.data.username);
-            setName(res.data.name);
-            console.log(res.data);
+        }).then((res) => {
+            console.log(res.data)
+            setText('')
+            fetchTweets();
         }).catch((err) => {
-            console.log(err);
-        })
+            console.log(err)
+        }
+        )
+    }
+    useEffect(() => {
+        fetchTweets()
+        fetchTimeline()
     }, [])
 
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
     };
+    //
+
+
+    useEffect(() => {
+        setTextareaStyle({ height: '3em' });
+    }, []);
+
+    const adjustTextareaHeight = () => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            const numLines = (textarea.value.match(/\n/g) || []).length + 1;
+
+            const newHeight = numLines * 20;
+            setTextareaStyle({ height: `${newHeight}px` });
+        }
+    };
+
+    const handleChange = (event) => {
+        setText(event.target.value);
+        adjustTextareaHeight();
+    };
+
+
 
     return (
         <div className='flex justify-center w-full bg-black text-white'>
             <div className="grid grid-cols-10 w-5/6 gap-10 bg-black">
-                {/* Left Navbar */}
                 <div className="col-span-2 h-screen sticky top-0  text-white p-4 ">
-                    <Sidebar username={username} name={name} />
+                    <Sidebar />
                 </div>
 
-                {/* Middle Section */}
                 <div className="col-span-5  p-4 overflow-y-auto">
-                    {/* Toggle Buttons */}
                     <h2 className='font-black text-xl'>Home</h2 >
-                    <div className="flex justify-between px-20 mb-4 mt-10">
+                    <div className="flex justify-between px-20 mb-4 mt-10 border-b-gray-400 border-b-2">
                         <button
-                            className={`px-2 font-bold border-b-4 py-1 ${selectedTab === 'forYou' ? 'border-b-blue-500 text-white' : 'text-[#71767b] border-b-0'
+                            className={`mr-4 font-bold text-center px-10 pt-5 pb-2  border-b-4 py-1 delay-150 hover:bg-[#181818] ${selectedTab === 'forYou' ? 'border-b-blue-500 text-white' : 'text-[#71767b] border-b-black '
                                 }`}
                             onClick={() => handleTabChange('forYou')}
                         >
                             For You
                         </button>
                         <button
-                            className={`mr-4 px-2 font-bold text-center   border-b-4 py-1 ${selectedTab === 'timeline' ? 'border-b-blue-500 text-white' : ' text-[#71767b] border-b-0'
-                                }`}
+                            className={`mr-4 font-bold text-center px-10 pt-5 pb-2  border-b-4 py-1 delay-150 hover:bg-[#181818] ${selectedTab === 'timeline' ? 'border-b-blue-500 text-white' : ' text-[#71767b] border-b-black'
+                                } `}
                             onClick={() => handleTabChange('timeline')}
                         >
                             Following
                         </button>
                     </div>
+                    <div className='flex w-full '>
+                        <FaUserCircle className='text-5xl ' />
+                        <textarea
+                            ref={textareaRef}
+                            style={textareaStyle}
+                            value={text}
+                            onChange={handleChange}
+                            name="input" className='p-2 outline-none bg-black w-full text-white capitalize' placeholder='What is happening?!'
+                        />
+                    </div>
+                    <div className='flex p-5 justify-between items-center'>
+                        <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg' />
+                        <button className='bg-[#1d9bf0] text-center rounded-full text-md px-5 py-1 ' onClick={(e) => { e.preventDefault(); handleTweet() }}>Post</button>
 
-                    {/* Content Based on Selected Tab */}
-                    {selectedTab === 'timeline' && (
-                        <div>
-                            {/* Timeline Content */}
-                            {/* Replace with your timeline content */}
-                        </div>
-                    )}
+                    </div>
+                    <Tweets tweets={selectedTab === 'timeline' ? timeline : tweets} />
 
-                    {selectedTab === 'forYou' && (
-                        <div>
-                            {/* For You Content */}
-                            {/* Replace with your "For You" content */}
-                        </div>
-                    )}
                 </div>
 
                 {/* Right Section (List of Users to Follow) */}
                 <div className="col-span-3 p-4">
-                    List of Users to Follow
-                    Replace with your list of users to follow
+                    <Follow />
                 </div>
             </div>
         </div >

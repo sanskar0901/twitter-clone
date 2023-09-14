@@ -9,5 +9,6 @@ router.put('/edit/:tweetId', authMiddleware, TweetController.editTweet);
 router.delete('/delete/:tweetId', authMiddleware, TweetController.deleteTweet);
 router.get('/user/:userId', TweetController.getUserTweets);
 router.get('/timeline', authMiddleware, TweetController.getTimeline);
+router.get('/all', TweetController.getAllTweet)
 
 module.exports = router;
