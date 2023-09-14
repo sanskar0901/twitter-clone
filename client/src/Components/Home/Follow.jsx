@@ -4,7 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { api } from '../const';
 
-const Follow = () => {
+const Follow = ({ followUser, followingUsers, setFollowingUsers }) => {
     const token = Cookies.get('token');
     const [username, setUsername] = useState('');
     useEffect(() => {
@@ -34,8 +34,6 @@ const Follow = () => {
             });
     }, []);
 
-    const [followingUsers, setFollowingUsers] = useState([]);
-
     useEffect(() => {
         // Fetch the list of users that the current user is following
         axios
@@ -53,51 +51,11 @@ const Follow = () => {
             });
     }, [token]);
 
-    const followUser = (userId) => {
-        if (followingUsers.includes(userId)) {
-            // If the user is already following, it's an unfollow action
-            axios
-                .post(
-                    `${api}/users/unfollow/${userId}`,
-                    {},
-                    {
-                        headers: {
-                            'x-auth-token': token,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // Remove the user from the list of following users
-                    setFollowingUsers(followingUsers.filter((id) => id !== userId));
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        } else {
-            // If the user is not following, it's a follow action
-            axios
-                .post(
-                    `${api}/users/follow/${userId}`,
-                    {},
-                    {
-                        headers: {
-                            'x-auth-token': token,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // Add the user to the list of following users
-                    setFollowingUsers([...followingUsers, userId]);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-    };
+
 
     return (
         <div className="w-full rounded-lg p-2 bg-gray-900 text-white sticky">
-            <p className="font-black m-2 text-lg">Who to follow</p>
+            <p className="font-black m-2 text-lg">Whome to follow</p>
             {users.map((user) => {
                 // Check if the current user is already following this user
                 const isFollowing = followingUsers.includes(user._id);

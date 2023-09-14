@@ -27,6 +27,56 @@ function Home() {
     const [tweets, setTweets] = useState([])
     const [selectedTab, setSelectedTab] = useState('forYou');
     const token = Cookies.get("token");
+    const [followingUsers, setFollowingUsers] = useState([]);
+
+
+
+    const followUser = (userId) => {
+        if (followingUsers.includes(userId)) {
+            // If the user is already following, it's an unfollow action
+            axios
+                .post(
+                    `${api}/users/unfollow/${userId}`,
+                    {},
+                    {
+                        headers: {
+                            'x-auth-token': token,
+                        },
+                    }
+                )
+                .then((res) => {
+                    // Remove the user from the list of following users
+                    setFollowingUsers(followingUsers.filter((id) => id !== userId));
+                    fetchTimeline()
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            // If the user is not following, it's a follow action
+            axios
+                .post(
+                    `${api}/users/follow/${userId}`,
+                    {},
+                    {
+                        headers: {
+                            'x-auth-token': token,
+                        },
+                    }
+                )
+                .then((res) => {
+                    // Add the user to the list of following users
+                    setFollowingUsers([...followingUsers, userId]);
+                    fetchTimeline();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    };
+
+
+
 
     const fetchTweets = () => {
         axios
@@ -56,6 +106,9 @@ function Home() {
                 console.log(err);
             });
     };
+
+
+
     const handleTweet = () => {
         axios.post(`${api}/tweets/create`, {
             text
@@ -129,20 +182,21 @@ function Home() {
                             Following
                         </button>
                     </div>
-                    <div className='flex w-full '>
+                    <div className='flex w-full border-b-[1px] border-[#2f3336]'>
                         <FaUserCircle className='text-5xl ' />
-                        <textarea
-                            ref={textareaRef}
-                            style={textareaStyle}
-                            value={text}
-                            onChange={handleChange}
-                            name="input" className='p-2 outline-none bg-black w-full text-white capitalize' placeholder='What is happening?!'
-                        />
-                    </div>
-                    <div className='flex p-5 justify-between items-center'>
-                        <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg' />
-                        <button className='bg-[#1d9bf0] text-center rounded-full text-md px-5 py-1 ' onClick={(e) => { e.preventDefault(); handleTweet() }}>Post</button>
-
+                        <div className='w-full'>
+                            <textarea
+                                ref={textareaRef}
+                                style={textareaStyle}
+                                value={text}
+                                onChange={handleChange}
+                                name="input" className='p-2 outline-none bg-black w-full text-white capitalize' placeholder='What is happening?!'
+                            />
+                            <div className='flex p-5 justify-between items-center '>
+                                <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg' />
+                                <button className='bg-[#1d9bf0] text-center rounded-full text-md px-5 py-1 ' onClick={(e) => { e.preventDefault(); handleTweet() }}>Post</button>
+                            </div>
+                        </div>
                     </div>
                     <Tweets tweets={selectedTab === 'timeline' ? timeline : tweets} />
 
@@ -150,7 +204,7 @@ function Home() {
 
                 {/* Right Section (List of Users to Follow) */}
                 <div className="col-span-3 p-4">
-                    <Follow />
+                    <Follow followingUsers={followingUsers} setFollowingUsers={setFollowingUsers} followUser={followUser} />
                 </div>
             </div>
         </div >

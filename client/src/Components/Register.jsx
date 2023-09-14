@@ -29,7 +29,7 @@ const Register = () => {
             const response = await axios.post(`${api}/users/register`, formData);
             console.log(response);
             cookie.set('token', response.data.token);
-            navigate('/home');
+            window.location.reload();
         } catch (error) {
             console.error('Login failed', error);
         }

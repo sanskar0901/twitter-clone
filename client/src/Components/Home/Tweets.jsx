@@ -7,13 +7,12 @@ import { GrFormUpload } from "react-icons/gr";
 const Tweets = (tweets) => {
     console.log(tweets);
     return (
-
         <>
             {tweets.tweets.map((tweet) => {
                 return (
-                    <div className='flex w-full p-5 ' key={tweet._id}>
+                    <div className='flex w-full p-5 border-b-[1px] border-[#2f3336] ' key={tweet._id}>
                         <FaUserCircle className='text-5xl pr-2' />
-                        <div className='w-full'>
+                        <div className='w-full '>
                             <div className='flex pb-2'>
                                 <p>{tweet.author.name}</p>
                                 <p className='text-gray-400 pl-2'>@{tweet.author.username}</p>
