@@ -1,6 +1,4 @@
-# Project Name
-
-![Project Logo/Image](url-to-logo-or-image.png)
+# X-website
 
 X-clone Using MERN-Stack 
 
