@@ -179,7 +179,7 @@ function Home() {
                                 } `}
                             onClick={() => handleTabChange('timeline')}
                         >
-                            Following
+                            Timeline
                         </button>
                     </div>
                     <div className='flex w-full border-b-[1px] border-[#2f3336]'>
