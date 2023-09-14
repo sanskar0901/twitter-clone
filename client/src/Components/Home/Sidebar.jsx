@@ -10,6 +10,7 @@ import { TbNotes } from "react-icons/tb";
 import { HiOutlineMail, HiOutlineBell } from "react-icons/hi";
 import { RiTwitterXFill } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa"
+import Cookies from 'js-cookie';
 const Sidebar = ({ username, name }) => {
     return (
         <>
@@ -59,7 +60,7 @@ const Sidebar = ({ username, name }) => {
                     <p className=''>{name}</p>
                     <span className='text-[#71767b] font-light'>@{username}</span>
                 </div>
-                <IoMdLogOut className='cursor-pointer' />
+                <IoMdLogOut className='cursor-pointer' onClick={() => { Cookies.remove('token'); window.location.reload() }} />
 
 
             </div>

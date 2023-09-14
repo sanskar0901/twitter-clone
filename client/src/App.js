@@ -6,53 +6,46 @@ import Register from './Components/Register';
 import Home from './Components/Home/Home';
 
 function App() {
-  const [token, setToken] = useState(Cookies.get.token);
+  const [token, setToken] = useState(Cookies.get('token'));
+
+  useEffect(() => {
+    setToken(Cookies.get('token'));
+  }, [Cookies.get('token')]);
   const PRIVATE_ROUTES = [
     {
       path: "/",
       component: <Home />
     },
-  ]
+    // Add other private routes here
+  ];
+
   const PUBLIC_ROUTES = [
     {
       path: "/login",
       component: <Login />
-
     },
     {
       path: "/register",
       component: <Register />
     }
-  ]
+  ];
   return (
 
 
     <div className="App">
       <Router>
         <Routes>
-          {
-            token &&
-            PRIVATE_ROUTES.map(route =>
+          {token ? (
+            PRIVATE_ROUTES.map(route => (
               <Route path={route.path} element={route.component} key={route.path} />
-            )
-          }
-          {
-            !token &&
-            PUBLIC_ROUTES.map(route =>
+            ))
+          ) : (
+            PUBLIC_ROUTES.map(route => (
               <Route path={route.path} element={route.component} key={route.path} />
-            )
-          }
-          {
-            token &&
-            <Route path="*" element={<Navigate to="/" />} />
-          }
-          {
-            !token &&
-            <Route path="*" element={<Navigate to="/login" />} />
-          }
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
+            ))
+          )}
+          {token && <Route path="*" element={<Navigate to="/" />} />}
+          {!token && <Route path="*" element={<Navigate to="/login" />} />}
         </Routes>
       </Router>
     </div >

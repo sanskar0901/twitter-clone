@@ -22,15 +22,15 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(`${api}/users/login`, formData);
-            console.log(response);
-            cookie.set('token', response.data.token);
-            navigate('/home');
-        } catch (error) {
-            throw error;
-        }
-    };
+        axios.post(`${api}/users/login`, formData).then((res) => {
+
+            console.log(res);
+            cookie.set('token', res.data.token)
+            navigate('/');
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black">
