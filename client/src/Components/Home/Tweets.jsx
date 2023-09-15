@@ -18,6 +18,7 @@ const Tweets = (tweets) => {
                                 <p className='text-gray-400 pl-2'>@{tweet.author.username}</p>
                             </div>
                             <p>{tweet.text}</p>
+                            {tweet.imgurl && <img src={tweet.imgurl} className='my-4 h-[50vh] rounded-[1rem]' alt="" />}
                             <div className='flex justify-between pt-2 text-gray-500 '>
                                 <div className='flex  pl-5 items-center hover:text-[#187abc] cursor-pointer transition-all delay-150'>
                                     <FaRegComment className=' ease-out hover:color-blue-500' />

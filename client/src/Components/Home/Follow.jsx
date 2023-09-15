@@ -54,8 +54,8 @@ const Follow = ({ followUser, followingUsers, setFollowingUsers }) => {
 
 
     return (
-        <div className="w-full rounded-lg p-2 bg-gray-900 text-white sticky">
-            <p className="font-black m-2 text-lg">Whome to follow</p>
+        <div className="w-full rounded-lg p-2 bg-gray-900 text-white">
+            <p className="font-black m-2 text-lg">Who to follow</p>
             {users.map((user) => {
                 // Check if the current user is already following this user
                 const isFollowing = followingUsers.includes(user._id);

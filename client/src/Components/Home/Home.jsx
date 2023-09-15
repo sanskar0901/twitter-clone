@@ -28,6 +28,8 @@ function Home() {
     const [selectedTab, setSelectedTab] = useState('forYou');
     const token = Cookies.get("token");
     const [followingUsers, setFollowingUsers] = useState([]);
+    const [selectedFile, setSelectedFile] = useState("");
+
 
 
 
@@ -107,24 +109,70 @@ function Home() {
             });
     };
 
-
-
-    const handleTweet = () => {
-        axios.post(`${api}/tweets/create`, {
-            text
-        }, {
-            headers: {
-                "x-auth-token": `${token}`,
-            },
-        }).then((res) => {
-            console.log(res.data)
-            setText('')
-            fetchTweets();
-        }).catch((err) => {
-            console.log(err)
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setSelectedFile(selectedFile);
+            console.log("file ", selectedFile.name)
         }
-        )
-    }
+    };
+
+    // const handleTweet = () => {
+    //     axios.post(`${api}/tweets/create`, {
+    //         text
+    //     }, {
+    //         headers: {
+    //             "x-auth-token": `${token}`,
+    //         },
+    //     }).then((res) => {
+    //         console.log(res.data)
+    //         setText('')
+    //         fetchTweets();
+    //     }).catch((err) => {
+    //         console.log(err)
+    //     }
+    //     )
+    // }
+    const handleTweet = () => {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        axios
+            .post('https://api.cloudinary.com/v1_1/dfpztfd9z/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    upload_preset: 'ml_default',
+                },
+            })
+            .then((uploadRes) => {
+                // Once the file is uploaded, create the tweet with the file URL
+                const tweetData = {
+                    text,
+                    imgurl: uploadRes.data.secure_url, // Assuming Cloudinary returns the secure URL
+                };
+                console.log('Tweet data:', tweetData);
+
+                axios
+                    .post(`${api}/tweets/create`, tweetData, {
+                        headers: {
+                            'x-auth-token': token,
+                        },
+                    })
+                    .then((tweetRes) => {
+                        // console.log('Tweet created:', tweetRes.data);
+                        setText('');
+                        setSelectedFile('');
+                        fetchTweets();
+                    })
+                    .catch((tweetErr) => {
+                        console.error('Error creating tweet:', tweetErr);
+                    });
+            })
+            .catch((uploadErr) => {
+                console.error('Error uploading file:', uploadErr);
+            });
+    };
     useEffect(() => {
         fetchTweets()
         fetchTimeline()
@@ -133,7 +181,7 @@ function Home() {
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
     };
-    //
+
 
 
     useEffect(() => {
@@ -154,7 +202,7 @@ function Home() {
         setText(event.target.value);
         adjustTextareaHeight();
     };
-
+    const fileInputRef = useRef(null);
 
 
     return (
@@ -164,7 +212,9 @@ function Home() {
                     <Sidebar />
                 </div>
 
-                <div className="col-span-5  p-4 overflow-y-auto">
+                <div className="col-span-5  p-4 overflow-y-auto border-x-[1px] border-[#2f3336]">
+
+
                     <h2 className='font-black text-xl'>Home</h2 >
                     <div className="flex justify-between px-20 mb-4 mt-10 border-b-gray-400 border-b-2">
                         <button
@@ -193,7 +243,17 @@ function Home() {
                                 name="input" className='p-2 outline-none bg-black w-full text-white capitalize' placeholder='What is happening?!'
                             />
                             <div className='flex p-5 justify-between items-center '>
-                                <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg' />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    ref={fileInputRef}
+                                    onChange={handleFileChange}
+                                />
+                                <div className='flex items-center gap-3 justify-center'>
+                                    <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg cursor-pointer' onClick={() => fileInputRef.current.click()} />
+                                    {selectedFile && <img src={selectedFile ? URL.createObjectURL(selectedFile) : ''} alt="" className='w-24 h-24' />}
+                                </div>
                                 <button className='bg-[#1d9bf0] text-center rounded-full text-md px-5 py-1 ' onClick={(e) => { e.preventDefault(); handleTweet() }}>Post</button>
                             </div>
                         </div>
