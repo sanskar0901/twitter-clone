@@ -20,7 +20,7 @@ const Sidebar = ({ setIsProfileRoute, name, username }) => {
         <>
             <img src={logo} alt="Logo" className='mb-3 ' />
             <ul className="text-xl align mb-3">
-                <li className=" flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150  py-2 hover:bg-[#181818]">
+                <li className="flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150 py-2 hover:bg-[#181818]" onClick={() => { setIsProfileRoute(true) }}>
                     <BiHomeCircle className='text-xl ' />
                     <Link to="#" className="block pl-4 font-bold">Home</Link>
                 </li>
@@ -48,9 +48,9 @@ const Sidebar = ({ setIsProfileRoute, name, username }) => {
                     <RiTwitterXFill className='text-xl' />
                     <Link to="#" className="block pl-4 font-bold">Verified</Link>
                 </li>
-                <li className="flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150  py-2 hover:bg-[#181818]">
+                <li className="flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150  py-2 hover:bg-[#181818]" onClick={() => { setIsProfileRoute(true) }}>
                     <BsPerson className='text-xl ' />
-                    <Link onClick={() => { setIsProfileRoute(true) }} className="block pl-4 font-bold">Profile</Link>
+                    <Link className="block pl-4 font-bold">Profile</Link>
                 </li>
                 <li className=" flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150  py-2 hover:bg-[#181818]">
                     <CiCircleMore className='text-xl ' />
