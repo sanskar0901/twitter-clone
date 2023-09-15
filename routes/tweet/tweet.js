@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const TweetController = require('./TweetController');
 const authMiddleware = require('../middleware/auth');
+const fileUpload = require('express-fileupload');
+router.use(fileUpload());
 
 // Define routes for tweet operations
 router.post('/create', authMiddleware, TweetController.createTweet);

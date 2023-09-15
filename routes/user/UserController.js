@@ -184,7 +184,6 @@ module.exports = {
             }
 
             const currentUserId = req.user;
-            console.log(currentUserId);
 
             if (currentUserId === userId) {
                 return res.status(400).json({ error: 'Cannot follow yourself' });
@@ -249,7 +248,6 @@ module.exports = {
     getFollowing: async (req, res) => {
         try {
             const userId = req.user;
-            console.log(userId);
             const user = await User.findById(userId)
 
             if (!user) {

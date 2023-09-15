@@ -1,5 +1,12 @@
 const Tweet = require('../../models/tweets.model');
 const User = require('../../models/user.model');
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
+cloudinary.config({
+    cloud_name: 'dfpztfd9z',
+    api_key: '759898287683162',
+    api_secret: process.env.CLOUDENARY
+});
 
 module.exports = {
 
@@ -7,19 +14,26 @@ module.exports = {
     // Create a new tweet
     createTweet: async (req, res) => {
         try {
-            const { text } = req.body;
+            const { text, imgurl } = req.body;
             const userId = req.user;
+            // Check if a file was uploaded
+
+            // If no image was uploaded, create the tweet without an image
             const newTweet = new Tweet({
                 author: userId,
                 text,
+                imgurl,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });
+
             const currentUser = await User.findById(userId);
             currentUser.profile.tweets.push(newTweet._id);
             await currentUser.save();
+
             const savedTweet = await newTweet.save();
             res.status(201).json(savedTweet);
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'An error occurred while creating the tweet.' });
