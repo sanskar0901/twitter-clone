@@ -81,7 +81,6 @@ const Profile = ({ username, name, setIsProfileRoute }) => {
             });
     })
     useEffect(() => {
-        // Fetch user data from the backend API
         fetchProfile();
     }, []);
 
@@ -158,7 +157,6 @@ const Profile = ({ username, name, setIsProfileRoute }) => {
                     </div>
                 </div>
                 <div className="col-span-5 p-4 overflow-y-auto">
-                    {/* Add tabs to switch between 'posts' and 'following' */}
                     <div className="flex justify-center mb-4 border-b-2 border-[#2f3336]">
                         <button
                             className={`mr-4 font-bold text-center px-5 py-2 border-b-4 delay-150 hover:bg-[#181818] ${selectedTab === 'posts' ? 'border-b-blue-500 text-white' : 'text-[#71767b] border-b-black'
@@ -169,7 +167,6 @@ const Profile = ({ username, name, setIsProfileRoute }) => {
                         </button>
                     </div>
 
-                    {/* Render user posts or following users based on selected tab */}
                     {selectedTab === 'posts' && (
                         <div>
                             {userPosts.map((post) => (

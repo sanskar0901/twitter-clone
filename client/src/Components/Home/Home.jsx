@@ -44,7 +44,6 @@ function Home() {
 
     const followUser = (userId) => {
         if (followingUsers.includes(userId)) {
-            // If the user is already following, it's an unfollow action
             axios
                 .post(
                     `${api}/users/unfollow/${userId}`,
@@ -56,7 +55,6 @@ function Home() {
                     }
                 )
                 .then((res) => {
-                    // Remove the user from the list of following users
                     setFollowingUsers(followingUsers.filter((id) => id !== userId));
                     fetchTimeline()
                 })
@@ -64,7 +62,6 @@ function Home() {
                     console.log(err);
                 });
         } else {
-            // If the user is not following, it's a follow action
             axios
                 .post(
                     `${api}/users/follow/${userId}`,
@@ -76,7 +73,6 @@ function Home() {
                     }
                 )
                 .then((res) => {
-                    // Add the user to the list of following users
                     setFollowingUsers([...followingUsers, userId]);
                     fetchTimeline();
                 })
@@ -155,10 +151,9 @@ function Home() {
                 },
             })
             .then((uploadRes) => {
-                // Once the file is uploaded, create the tweet with the file URL
                 const tweetData = {
                     text,
-                    imgurl: uploadRes.data.secure_url, // Assuming Cloudinary returns the secure URL
+                    imgurl: uploadRes.data.secure_url,
                 };
                 console.log('Tweet data:', tweetData);
 

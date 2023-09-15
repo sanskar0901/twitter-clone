@@ -16,9 +16,6 @@ module.exports = {
         try {
             const { text, imgurl } = req.body;
             const userId = req.user;
-            // Check if a file was uploaded
-
-            // If no image was uploaded, create the tweet without an image
             const newTweet = new Tweet({
                 author: userId,
                 text,
@@ -134,10 +131,8 @@ module.exports = {
     // Get the user's timeline (tweets from followed users)
     getTimeline: async (req, res) => {
         try {
-            // Get the current user's ID from the authenticated request (provided by your auth middleware)
             const userId = req.user;
 
-            // Find the user document in the database using the user ID
 
             const user = await User.findById(userId);
 

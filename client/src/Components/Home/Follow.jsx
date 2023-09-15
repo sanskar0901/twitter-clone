@@ -35,7 +35,6 @@ const Follow = ({ followUser, followingUsers, setFollowingUsers }) => {
     }, []);
 
     useEffect(() => {
-        // Fetch the list of users that the current user is following
         axios
             .get(`${api}/users/following`, {
                 headers: {
