@@ -22,4 +22,6 @@ If your project is hosted online, provide a link to a live demo.
 
 #### Home Page
 ![Screenshots](./Reademe-assets/home.png)
+#### Profile Page
+![Screenshots](./Reademe-assets/profile1.png)
 

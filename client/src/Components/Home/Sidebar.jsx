@@ -20,7 +20,7 @@ const Sidebar = ({ setIsProfileRoute, name, username }) => {
         <>
             <img src={logo} alt="Logo" className='mb-3 ' />
             <ul className="text-xl align mb-3">
-                <li className="flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150 py-2 hover:bg-[#181818]" onClick={() => { setIsProfileRoute(true) }}>
+                <li className="flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150 py-2 hover:bg-[#181818]" onClick={() => { setIsProfileRoute(false) }}>
                     <BiHomeCircle className='text-xl ' />
                     <Link to="#" className="block pl-4 font-bold">Home</Link>
                 </li>
