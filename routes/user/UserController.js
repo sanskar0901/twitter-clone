@@ -1,4 +1,5 @@
 const User = require('../../models/user.model.js');
+const Tweet = require('../../models/tweets.model.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -106,14 +107,13 @@ module.exports = {
             const { username } = req.params;
 
             const user = await User.findOne({ username })
-                .populate('profile.following', 'username')
-                .populate('profile.followers', 'username');
+            const tweets = await Tweet.find({ author: user._id }).sort({ updatedAt: -1 }).populate('author', ['username', 'name', 'avatar']);
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            res.status(200).json(user.profile);
+            res.status(200).json({ userProfile: user.profile, createdAt: user.createdAt, posts: tweets });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Internal server error' });

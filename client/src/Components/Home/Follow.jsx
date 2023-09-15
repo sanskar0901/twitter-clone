@@ -62,10 +62,12 @@ const Follow = ({ followUser, followingUsers, setFollowingUsers }) => {
                 return (
                     user.username != username &&
                     <div className="flex justify-between items-center p-4 hover:bg-[#181818]" key={user._id}>
-                        <FaUserCircle className="text-4xl" />
-                        <div>
-                            <p className="font-bold">{user.name}</p>
-                            <p className="text-gray-200 font-light text-sm">{user.username}</p>
+                        <div className='flex items-center gap-4'>
+                            <FaUserCircle className="text-4xl" />
+                            <div>
+                                <p className="font-bold">{user.name}</p>
+                                <p className="text-gray-200 font-light text-sm">{user.username}</p>
+                            </div>
                         </div>
                         <button
                             className={`${isFollowing ? 'bg-gray-900 text-white border-white border-2' : 'bg-[#ffffff] font-bold text-center text-black'

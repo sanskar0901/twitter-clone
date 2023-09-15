@@ -2,21 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { api } from '../const';
 import Cookies from 'js-cookie';
-// import { Navigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-// import logo from '../../Assets/logo.svg';
-// import { BiHomeCircle, BiSearch } from "react-icons/bi";
-// import { CiCircleMore } from "react-icons/ci";
-import { BsPerson, BsImageFill } from "react-icons/bs";
-// import { IoPeopleOutline } from "react-icons/io5";
-// import { IoMdLogOut } from "react-icons/io";
-// import { TbNotes } from "react-icons/tb";
-// import { HiOutlineMail, HiOutlineBell } from "react-icons/hi";
-// import { RiTwitterXFill } from "react-icons/ri";
+import { BsImageFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa"
 import Sidebar from './Sidebar';
 import Tweets from './Tweets';
 import Follow from './Follow';
+import Profile from '../profile/Profile';
 
 
 function Home() {
@@ -29,6 +20,24 @@ function Home() {
     const token = Cookies.get("token");
     const [followingUsers, setFollowingUsers] = useState([]);
     const [selectedFile, setSelectedFile] = useState("");
+    const [isProfileRoute, setIsProfileRoute] = useState(false)
+
+    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    useEffect(() => {
+        axios.get(`${api}/users/getuser`, {
+            headers: {
+                "x-auth-token": `${Cookies.get("token")}`,
+            },
+        }
+        ).then((res) => {
+            setUsername(res.data.username);
+            setName(res.data.name);
+            console.log(res.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [])
 
 
 
@@ -209,59 +218,63 @@ function Home() {
         <div className='flex justify-center w-full bg-black text-white'>
             <div className="grid grid-cols-10 w-5/6 gap-10 bg-black">
                 <div className="col-span-2 h-screen sticky top-0  text-white p-4 ">
-                    <Sidebar />
+                    <Sidebar setIsProfileRoute={setIsProfileRoute} name={name} username={username} />
                 </div>
 
                 <div className="col-span-5  p-4 overflow-y-auto border-x-[1px] border-[#2f3336]">
+                    {!isProfileRoute ?
 
-
-                    <h2 className='font-black text-xl'>Home</h2 >
-                    <div className="flex justify-between px-20 mb-4 mt-10 border-b-gray-400 border-b-2">
-                        <button
-                            className={`mr-4 font-bold text-center px-10 pt-5 pb-2  border-b-4 py-1 delay-150 hover:bg-[#181818] ${selectedTab === 'forYou' ? 'border-b-blue-500 text-white' : 'text-[#71767b] border-b-black '
-                                }`}
-                            onClick={() => handleTabChange('forYou')}
-                        >
-                            For You
-                        </button>
-                        <button
-                            className={`mr-4 font-bold text-center px-10 pt-5 pb-2  border-b-4 py-1 delay-150 hover:bg-[#181818] ${selectedTab === 'timeline' ? 'border-b-blue-500 text-white' : ' text-[#71767b] border-b-black'
-                                } `}
-                            onClick={() => handleTabChange('timeline')}
-                        >
-                            Timeline
-                        </button>
-                    </div>
-                    <div className='flex w-full border-b-[1px] border-[#2f3336]'>
-                        <FaUserCircle className='text-5xl ' />
-                        <div className='w-full'>
-                            <textarea
-                                ref={textareaRef}
-                                style={textareaStyle}
-                                value={text}
-                                onChange={handleChange}
-                                name="input" className='p-2 outline-none bg-black w-full text-white capitalize' placeholder='What is happening?!'
-                            />
-                            <div className='flex p-5 justify-between items-center '>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    style={{ display: 'none' }}
-                                    ref={fileInputRef}
-                                    onChange={handleFileChange}
-                                />
-                                <div className='flex items-center gap-3 justify-center'>
-                                    <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg cursor-pointer' onClick={() => fileInputRef.current.click()} />
-                                    {selectedFile && <img src={selectedFile ? URL.createObjectURL(selectedFile) : ''} alt="" className='w-24 h-24' />}
-                                </div>
-                                <button className='bg-[#1d9bf0] text-center rounded-full text-md px-5 py-1 ' onClick={(e) => { e.preventDefault(); handleTweet() }}>Post</button>
+                        <>
+                            <h2 className='font-black text-xl'>Home</h2 >
+                            <div className="flex justify-between px-20 mb-4 mt-10 border-b-gray-400 border-b-2">
+                                <button
+                                    className={`mr-4 font-bold text-center px-10 pt-5 pb-2  border-b-4 py-1 delay-150 hover:bg-[#181818] ${selectedTab === 'forYou' ? 'border-b-blue-500 text-white' : 'text-[#71767b] border-b-black '
+                                        }`}
+                                    onClick={() => handleTabChange('forYou')}
+                                >
+                                    For You
+                                </button>
+                                <button
+                                    className={`mr-4 font-bold text-center px-10 pt-5 pb-2  border-b-4 py-1 delay-150 hover:bg-[#181818] ${selectedTab === 'timeline' ? 'border-b-blue-500 text-white' : ' text-[#71767b] border-b-black'
+                                        } `}
+                                    onClick={() => handleTabChange('timeline')}
+                                >
+                                    Timeline
+                                </button>
                             </div>
-                        </div>
-                    </div>
-                    <Tweets tweets={selectedTab === 'timeline' ? timeline : tweets} />
+                            <div className='flex w-full border-b-[1px] border-[#2f3336]'>
+                                <FaUserCircle className='text-5xl ' />
+                                <div className='w-full'>
+                                    <textarea
+                                        ref={textareaRef}
+                                        style={textareaStyle}
+                                        value={text}
+                                        onChange={handleChange}
+                                        name="input" className='p-2 outline-none bg-black w-full text-white capitalize' placeholder='What is happening?!'
+                                    />
+                                    <div className='flex p-5 justify-between items-center '>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'none' }}
+                                            ref={fileInputRef}
+                                            onChange={handleFileChange}
+                                        />
+                                        <div className='flex items-center gap-3 justify-center'>
+                                            <BsImageFill className='text-blue-400 hover:text-blue-600 text-lg cursor-pointer' onClick={() => fileInputRef.current.click()} />
+                                            {selectedFile && <img src={selectedFile ? URL.createObjectURL(selectedFile) : ''} alt="" className='w-24 h-24' />}
+                                        </div>
+                                        <button className='bg-[#1d9bf0] text-center rounded-full text-md px-5 py-1 ' onClick={(e) => { e.preventDefault(); handleTweet() }}>Post</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <Tweets tweets={selectedTab === 'timeline' ? timeline : tweets} />
+                        </>
 
+                        :
+                        <Profile username={username} name={name} setIsProfileRoute={setIsProfileRoute} />
+                    }
                 </div>
-
                 {/* Right Section (List of Users to Follow) */}
                 <div className="col-span-3 p-4">
                     <Follow followingUsers={followingUsers} setFollowingUsers={setFollowingUsers} followUser={followUser} />

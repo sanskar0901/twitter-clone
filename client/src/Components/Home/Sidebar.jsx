@@ -13,24 +13,9 @@ import { TbNotes } from "react-icons/tb";
 import { HiOutlineMail, HiOutlineBell } from "react-icons/hi";
 import { RiTwitterXFill } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa"
-const Sidebar = () => {
+const Sidebar = ({ setIsProfileRoute, name, username }) => {
 
-    const [username, setUsername] = useState('');
-    const [name, setName] = useState('');
-    useEffect(() => {
-        axios.get(`${api}/users/getuser`, {
-            headers: {
-                "x-auth-token": `${Cookies.get("token")}`,
-            },
-        }
-        ).then((res) => {
-            setUsername(res.data.username);
-            setName(res.data.name);
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-    }, [])
+
     return (
         <>
             <img src={logo} alt="Logo" className='mb-3 ' />
@@ -65,7 +50,7 @@ const Sidebar = () => {
                 </li>
                 <li className="flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150  py-2 hover:bg-[#181818]">
                     <BsPerson className='text-xl ' />
-                    <Link to="#" className="block pl-4 font-bold">Profile</Link>
+                    <Link onClick={() => { setIsProfileRoute(true) }} className="block pl-4 font-bold">Profile</Link>
                 </li>
                 <li className=" flex items-center rounded-full hover:pl-4 transition-all ease-in-out delay-150  py-2 hover:bg-[#181818]">
                     <CiCircleMore className='text-xl ' />

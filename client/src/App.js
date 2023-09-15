@@ -21,11 +21,6 @@ function App() {
       path: "/",
       component: <Home />
     },
-    {
-      path: "/profile",
-      component: <Profile />
-
-    }
   ];
 
   const PUBLIC_ROUTES = [
