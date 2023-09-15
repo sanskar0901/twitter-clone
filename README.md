@@ -11,7 +11,7 @@ X-clone Using MERN-Stack
 
 ### Live Demo
 
-If your project is hosted online, provide a link to a live demo.
+Use Laptop/Desktop to view the demo it is not fully responsive
 
 **[Live Demo](https://x-clon.vercel.app/)**
 
