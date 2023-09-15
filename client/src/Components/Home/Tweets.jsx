@@ -22,19 +22,19 @@ const Tweets = (tweets) => {
                             <div className='flex justify-between pt-2 text-gray-500 '>
                                 <div className='flex  pl-5 items-center hover:text-[#187abc] cursor-pointer transition-all delay-150'>
                                     <FaRegComment className=' ease-out hover:color-blue-500' />
-                                    <span className='pl-2'>4</span>
+                                    <span className='pl-2'>6</span>
                                 </div>
                                 <div className='flex pl-5 items-center hover:text-[#00ba7c] cursor-pointer transition-all delay-150'>
                                     <FaRetweet className=' ease-out hover:color-blue-500' />
-                                    <span className='pl-2'>4</span>
+                                    <span className='pl-2'>9</span>
                                 </div>
                                 <div className='flex pl-5 items-center hover:text-[#f91880] cursor-pointer transition-all delay-150'>
                                     <AiOutlineHeart className=' ease-out hover:color-blue-500' />
-                                    <span className='pl-2'>4</span>
+                                    <span className='pl-2'>2</span>
                                 </div>
                                 <div className='flex pl-5 items-center hover:text-[#187abc] cursor-pointer transition-all delay-150'>
                                     <VscGraph className=' ease-out hover:color-blue-500' />
-                                    <span className='pl-2'>4</span>
+                                    <span className='pl-2'>7</span>
                                 </div>
 
                                 <div className='flex pl-5 items-center hover:text-[#187abc] cursor-pointer transition-all delay-150'>
